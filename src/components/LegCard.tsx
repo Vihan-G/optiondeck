@@ -1,5 +1,6 @@
 'use client'
 
+import { motion } from 'framer-motion'
 import type { Leg } from '@/lib/types'
 
 interface Props {
@@ -12,7 +13,12 @@ export function LegCard({ leg, onDelete }: Props) {
   const accent = isLong ? '#22c55e' : '#ef4444'
 
   return (
-    <div
+    <motion.div
+      layout
+      initial={{ opacity: 0, y: -4 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: -4 }}
+      transition={{ duration: 0.15 }}
       className="relative flex items-center justify-between overflow-hidden rounded-md border border-[#222] bg-[#111] px-4 py-3"
     >
       <span
@@ -40,6 +46,6 @@ export function LegCard({ leg, onDelete }: Props) {
       >
         ✕
       </button>
-    </div>
+    </motion.div>
   )
 }

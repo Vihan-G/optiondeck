@@ -1,4 +1,4 @@
-import type { Metadata } from 'next'
+import type { Metadata, Viewport } from 'next'
 import { Geist, Geist_Mono } from 'next/font/google'
 import './globals.css'
 
@@ -16,6 +16,18 @@ export const metadata: Metadata = {
   title: 'optiondeck — options strategy payoff visualizer',
   description:
     'Add option legs, see your payoff diagram instantly. Know your breakeven, max profit, and max loss before you place the trade.',
+  openGraph: {
+    title: 'optiondeck',
+    description: 'Options strategy payoff visualizer. No login. No broker.',
+    type: 'website',
+  },
+}
+
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  themeColor: '#0a0a0a',
+  colorScheme: 'dark',
 }
 
 export default function RootLayout({
