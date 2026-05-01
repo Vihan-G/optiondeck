@@ -7,6 +7,7 @@ import { PayoffChart } from '@/components/PayoffChart'
 import { MetricsBar } from '@/components/MetricsBar'
 import { StrategyBadge } from '@/components/StrategyBadge'
 import { PriceSlider } from '@/components/PriceSlider'
+import { Presets } from '@/components/Presets'
 import { computeMetrics } from '@/lib/strategies'
 import type { Leg } from '@/lib/types'
 
@@ -41,15 +42,25 @@ export default function Home() {
   function deleteLeg(id: string) {
     setLegs((prev) => prev.filter((l) => l.id !== id))
   }
+  function loadPreset(seeds: Omit<Leg, 'id'>[]) {
+    setLegs(seeds.map((s) => ({ ...s, id: newId() })))
+  }
 
   return (
     <main className="mx-auto max-w-7xl px-4 py-8 lg:px-8">
-      <header className="mb-8">
+      <header className="mb-6">
         <h1 className="text-2xl font-semibold tracking-tight">optiondeck</h1>
         <p className="mt-1 text-sm text-[#888]">
           Options strategy payoff visualizer
         </p>
       </header>
+
+      <div className="mb-6">
+        <h2 className="mb-2 text-[10px] font-semibold uppercase tracking-wider text-[#888]">
+          Presets
+        </h2>
+        <Presets onLoad={loadPreset} />
+      </div>
 
       <div className="grid gap-6 lg:grid-cols-[380px_1fr]">
         <section className="space-y-4">
