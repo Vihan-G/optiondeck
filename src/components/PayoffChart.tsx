@@ -40,14 +40,14 @@ export function PayoffChart({ curve, highlightPrice }: Props) {
 
   if (data.length === 0) {
     return (
-      <div className="flex h-[420px] items-center justify-center rounded-md border border-dashed border-[#222] text-sm text-[#666]">
-        Add a leg to see the payoff curve
+      <div className="flex h-[320px] items-center justify-center rounded-md border border-dashed border-[#222] text-sm text-[#666] sm:h-[380px] lg:h-[440px]">
+        Add a leg or load a preset to see the payoff curve
       </div>
     )
   }
 
   return (
-    <div className="h-[420px] w-full">
+    <div className="h-[320px] w-full sm:h-[380px] lg:h-[440px]">
       <ResponsiveContainer width="100%" height="100%">
         <ComposedChart
           data={data}
