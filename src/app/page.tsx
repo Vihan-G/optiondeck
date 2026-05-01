@@ -4,6 +4,8 @@ import { useMemo, useState } from 'react'
 import { LegForm } from '@/components/LegForm'
 import { LegCard } from '@/components/LegCard'
 import { PayoffChart } from '@/components/PayoffChart'
+import { MetricsBar } from '@/components/MetricsBar'
+import { StrategyBadge } from '@/components/StrategyBadge'
 import { computeMetrics } from '@/lib/strategies'
 import type { Leg } from '@/lib/types'
 
@@ -56,8 +58,16 @@ export default function Home() {
           </div>
         </section>
 
-        <section className="rounded-lg border border-[#222] bg-[#111] p-4 lg:p-6">
-          <PayoffChart curve={metrics.payoffCurve} />
+        <section className="space-y-4">
+          {legs.length > 0 && (
+            <>
+              <StrategyBadge metrics={metrics} />
+              <MetricsBar metrics={metrics} />
+            </>
+          )}
+          <div className="rounded-lg border border-[#222] bg-[#111] p-4 lg:p-6">
+            <PayoffChart curve={metrics.payoffCurve} />
+          </div>
         </section>
       </div>
     </main>
