@@ -1,11 +1,12 @@
 'use client'
 
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { LegForm } from '@/components/LegForm'
 import { LegCard } from '@/components/LegCard'
 import { PayoffChart } from '@/components/PayoffChart'
 import { MetricsBar } from '@/components/MetricsBar'
 import { StrategyBadge } from '@/components/StrategyBadge'
+import { PriceSlider } from '@/components/PriceSlider'
 import { computeMetrics } from '@/lib/strategies'
 import type { Leg } from '@/lib/types'
 
@@ -19,6 +20,20 @@ function newId(): string {
 export default function Home() {
   const [legs, setLegs] = useState<Leg[]>([])
   const metrics = useMemo(() => computeMetrics(legs), [legs])
+  const [sliderPrice, setSliderPrice] = useState<number | null>(null)
+
+  useEffect(() => {
+    if (legs.length === 0) {
+      setSliderPrice(null)
+      return
+    }
+    setSliderPrice((prev) => {
+      const mid = (metrics.priceMin + metrics.priceMax) / 2
+      if (prev == null) return mid
+      if (prev < metrics.priceMin || prev > metrics.priceMax) return mid
+      return prev
+    })
+  }, [legs.length, metrics.priceMin, metrics.priceMax])
 
   function addLeg(input: Omit<Leg, 'id'>) {
     setLegs((prev) => [...prev, { ...input, id: newId() }])
@@ -66,8 +81,20 @@ export default function Home() {
             </>
           )}
           <div className="rounded-lg border border-[#222] bg-[#111] p-4 lg:p-6">
-            <PayoffChart curve={metrics.payoffCurve} />
+            <PayoffChart
+              curve={metrics.payoffCurve}
+              highlightPrice={sliderPrice}
+            />
           </div>
+          {legs.length > 0 && sliderPrice != null && (
+            <PriceSlider
+              legs={legs}
+              min={metrics.priceMin}
+              max={metrics.priceMax}
+              value={sliderPrice}
+              onChange={setSliderPrice}
+            />
+          )}
         </section>
       </div>
     </main>
