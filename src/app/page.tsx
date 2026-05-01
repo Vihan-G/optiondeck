@@ -1,8 +1,10 @@
 'use client'
 
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 import { LegForm } from '@/components/LegForm'
 import { LegCard } from '@/components/LegCard'
+import { PayoffChart } from '@/components/PayoffChart'
+import { computeMetrics } from '@/lib/strategies'
 import type { Leg } from '@/lib/types'
 
 function newId(): string {
@@ -14,6 +16,7 @@ function newId(): string {
 
 export default function Home() {
   const [legs, setLegs] = useState<Leg[]>([])
+  const metrics = useMemo(() => computeMetrics(legs), [legs])
 
   function addLeg(input: Omit<Leg, 'id'>) {
     setLegs((prev) => [...prev, { ...input, id: newId() }])
@@ -53,10 +56,8 @@ export default function Home() {
           </div>
         </section>
 
-        <section className="rounded-lg border border-[#222] bg-[#111] p-6">
-          <p className="text-sm text-[#666]">
-            Chart will render here once legs are added.
-          </p>
+        <section className="rounded-lg border border-[#222] bg-[#111] p-4 lg:p-6">
+          <PayoffChart curve={metrics.payoffCurve} />
         </section>
       </div>
     </main>
